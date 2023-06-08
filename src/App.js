@@ -65,6 +65,23 @@ const App = () => {
     }
   }
 
+  const likeBlog = async (id, prevLikes) => {
+    try {
+      await blogService.update(id, {
+        likes: prevLikes + 1
+      })
+      const updatedBlogs = blogs.map((blog) => {
+        if (blog.id === id) {
+          return {...blog, likes: blog.likes += 1}
+        }
+        return blog;
+      })
+      setBlogs(updatedBlogs);
+    } catch (error) {
+      setNotification({message:'There was a problem adding the like', type:'error'})
+    }
+  }
+
   return (
     <div>
       <Notification notification={notification}></Notification>
@@ -79,7 +96,7 @@ const App = () => {
         </Togglable>
        
           {blogs.map(blog => {
-            return <Blog key={blog.id} blog={blog} />
+            return <Blog key={blog.id} blog={blog} like={likeBlog} />
           }
           )}
           

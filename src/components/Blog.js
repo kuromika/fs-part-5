@@ -1,11 +1,15 @@
 import { useState } from "react"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, like }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleVisibility = () => {
     setIsOpen((prev) => !prev);
+  }
+
+  const handleLike = () => {
+    like(blog.id, blog.likes);
   }
 
   return (
@@ -14,7 +18,7 @@ const Blog = ({ blog }) => {
       {isOpen &&
         <div>
           <a href={blog.url}>{blog.url}</a>
-          <p>{blog.likes}<button>like</button></p>
+          <p>{blog.likes}<button onClick={handleLike}>like</button></p>
           <p>{blog.user.name}</p>
         </div>
       }
