@@ -10,12 +10,12 @@ const Blog = ({ blog }) => {
 
   return (
     <div className="blog">
-      <p>{blog.title} <button type='button' onClick={toggleVisibility}>{isOpen ? 'hide' : 'show'}</button></p>
+      <p>{blog.title}{blog.author}<button type='button' onClick={toggleVisibility}>{isOpen ? 'hide' : 'show'}</button></p>
       {isOpen &&
         <div>
-          <p>{blog.url}</p>
+          <a href={blog.url}>{blog.url}</a>
           <p>{blog.likes}<button>like</button></p>
-          <p>{blog.author}</p>
+          <p>{blog.user.name}</p>
         </div>
       }
     </div>
