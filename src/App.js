@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import { LoginForm } from './components/LoginForm'
 import { login } from './services/login'
 import { BlogForm } from './components/BlogForm'
 import { Notification } from './components/Notification'
+import { Togglable } from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null);
-  const [notification, setNotification] = useState({message:'', type:''});
+  const [notification, setNotification] = useState({ message: '', type: '' });
+  const blogFormRef = useRef(null);
 
   useEffect(() => {
 
@@ -54,9 +56,10 @@ const App = () => {
 
   const addBlog = async (blog) => {
     try {
+      blogFormRef.current.turnOnOff();
       const newBlog = await blogService.create(blog, user.token);
       setBlogs(blogs.concat(newBlog));
-      setNotification({message: `New blog '${newBlog.title}' by ${newBlog.author} added`, type:'success'})
+      setNotification({ message: `New blog '${newBlog.title}' by ${newBlog.author} added`, type: 'success' })
     } catch (error) {
       setNotification({ message: 'There was a problem adding the blog', type: 'error' });
     }
@@ -66,14 +69,19 @@ const App = () => {
     <div>
       <Notification notification={notification}></Notification>
       {!user ? <LoginForm submit={handleLogin}></LoginForm> :
-      <div>
-        <p>{user.name} logged in</p>
-        <button type='button' onClick={handleLogout}>log out</button>
-        <h2>blogs</h2>
+        <div>
+          <h2>blogs</h2>
+           <p>{user.name} logged in
+            <button type='button' onClick={handleLogout}>log out</button>
+            </p>
+          <Togglable ref={blogFormRef} buttonLabel='new blog'>
+            <BlogForm addBlog={addBlog}></BlogForm>
+        </Togglable>
+       
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
           )}
-        <BlogForm addBlog={addBlog}></BlogForm>
+          
       </div>}
     </div>
   )
