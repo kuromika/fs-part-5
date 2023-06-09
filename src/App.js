@@ -65,6 +65,21 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (id, blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}?`)) {
+      try {
+        await blogService.remove(id, user.token);
+        const updatedBlogs = [...blogs].filter((blog) => {
+          return blog.id !== id
+        })
+        setBlogs(updatedBlogs);
+        setNotification({ message: 'Blog deleted successfully', type: 'success' });
+      } catch (error) {
+        setNotification({ message: 'There was an error', type: 'error' })
+      }
+    }
+  }
+
   const likeBlog = async (id, prevLikes) => {
     try {
       await blogService.update(id, {
@@ -77,6 +92,7 @@ const App = () => {
         return blog;
       })
       setBlogs(updatedBlogs);
+      setNotification({message: 'Like added', type: 'success'})
     } catch (error) {
       setNotification({message:'There was a problem adding the like', type:'error'})
     }
@@ -96,7 +112,7 @@ const App = () => {
         </Togglable>
        
           {blogs.sort((a,b) => b.likes - a.likes).map(blog => {
-            return <Blog key={blog.id} blog={blog} like={likeBlog} />
+            return <Blog key={blog.id} blog={blog} like={likeBlog} remove={removeBlog} username={user.username} />
           }
           )}
           
