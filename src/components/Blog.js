@@ -1,14 +1,14 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const Blog = ({ blog, like, remove, username }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false)
 
   const toggleVisibility = () => {
-    setIsOpen((prev) => !prev);
+    setIsOpen((prev) => !prev)
   }
 
   const handleLike = () => {
-    like(blog.id, blog.likes);
+    like(blog.id, blog.likes)
   }
 
   const handleRemove = () => {

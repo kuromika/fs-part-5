@@ -1,17 +1,18 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from 'react'
+import PropTypes from 'prop-types'
 
 export const Togglable = forwardRef((props, refs) => {
-  const [isOn, setIsOn] = useState(false);
+  const [isOn, setIsOn] = useState(false)
 
   const turnOnOff = () => {
-    setIsOn((prev) => !prev);
+    setIsOn((prev) => !prev)
   }
 
   useImperativeHandle(refs, () => {
     return {
       turnOnOff
     }
-  });
+  })
 
   return (
     <div>
@@ -20,7 +21,13 @@ export const Togglable = forwardRef((props, refs) => {
           {props.children}
           <button onClick={turnOnOff}>cancel</button>
         </div>
-       }
+      }
     </div>
   )
 })
+
+Togglable.displayName = 'Togglable'
+
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
+}

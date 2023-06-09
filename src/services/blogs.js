@@ -15,13 +15,13 @@ const getAll = () => {
 }
 
 const create = async (blog, token) => {
-  const response = await axios.post(baseUrl, blog, createAuth(token));
-  return response.data;
+  const response = await axios.post(baseUrl, blog, createAuth(token))
+  return response.data
 }
 
 const update = async (id, update) => {
   const response = await axios.put(`${baseUrl}/${id}`, update)
-  return response.data;
+  return response.data
 }
 
 const remove = async (id, token) => {
@@ -29,5 +29,11 @@ const remove = async (id, token) => {
   return response
 }
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, update, remove }
+const  services = {
+  getAll,
+  create,
+  update,
+  remove
+}
+
+export default services
