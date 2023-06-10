@@ -31,3 +31,15 @@ test('renders likes and url when button is clicked', async () => {
   expect(likes).toBeDefined()
   expect(url).toBeDefined()
 })
+
+test('like button is called exactly twice', async () => {
+  const likeMock = jest.fn()
+  render(<Blog blog={testBlog} like={likeMock}></Blog>)
+  const user = userEvent.setup()
+  const showButton = screen.getByRole('button', { name: /show/i })
+  await user.click(showButton)
+  const likeButton = screen.getByRole('button', { name: 'like' })
+  await user.click(likeButton)
+  await user.click(likeButton)
+  expect(likeMock.mock.calls).toHaveLength(2)
+})
