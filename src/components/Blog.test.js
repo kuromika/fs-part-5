@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom'
-import { getByRole, getByText, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import Blog from './Blog'
 import userEvent from '@testing-library/user-event'
 
