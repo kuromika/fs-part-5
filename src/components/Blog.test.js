@@ -20,3 +20,14 @@ test('renders title and author but not url or likes by default', () => {
   const paragraph = screen.getByText('test blog kuromika')
   expect(paragraph).toBeDefined()
 })
+
+test('renders likes and url when button is clicked', async () => {
+  render(<Blog blog={testBlog}></Blog>)
+  const user = userEvent.setup()
+  const showButton = screen.getByRole('button', { name: /show/i })
+  await user.click(showButton)
+  const likes = screen.getByText('10')
+  const url = screen.getByRole('link', { name: /www.google.com/i })
+  expect(likes).toBeDefined()
+  expect(url).toBeDefined()
+})
