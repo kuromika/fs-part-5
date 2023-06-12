@@ -37,7 +37,7 @@ describe('Blog app', () => {
       cy.login('kuromika', 'password')
     })
 
-    it.only('Blogs are sorted from most liked to least', function () {
+    it('Blogs are sorted from most liked to least', function () {
       cy.createBlog('first', 'makise', 'google', 10)
       cy.createBlog('third', 'makise', 'google', 5)
       cy.createBlog('second', 'makise', 'google', 7)
