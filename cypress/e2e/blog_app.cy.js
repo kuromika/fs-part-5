@@ -32,7 +32,7 @@ describe('Blog app', () => {
     })
   })
 
-  describe.only('When logged in', function () {
+  describe('When logged in', function () {
     beforeEach(() => {
       cy.login('kuromika', 'password')
     })
@@ -43,6 +43,17 @@ describe('Blog app', () => {
       cy.get('input#url').type('SERN')
       cy.get('button').contains('create').click()
       cy.contains('new blog Makise Kurisu')
+    })
+
+    describe.only('And there is one blog created', function () {
+      beforeEach(() => {
+        cy.createBlog('new blog', 'makise', 'google')
+      })
+      it('user can like blog', function () {
+        cy.contains('show').click()
+        cy.contains('like').click()
+        cy.contains('1')
+      })
     })
   })
 })
