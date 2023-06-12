@@ -27,7 +27,7 @@ describe('Blog app', () => {
       cy.get('input#username').type('salieri')
       cy.get('input#password').type('badpassword')
       cy.get('button').click()
-      cy.should('not.contain', 'salieri logged in')
+      cy.contains('salieri logged in').should('not.exist')
       cy.get('p').should('not.have.class', 'success').and('have.class', 'error')
     })
   })
@@ -45,7 +45,7 @@ describe('Blog app', () => {
       cy.contains('new blog Makise Kurisu')
     })
 
-    describe.only('And there is one blog created', function () {
+    describe('And there is one blog created', function () {
       beforeEach(() => {
         cy.createBlog('new blog', 'makise', 'google')
       })
@@ -57,8 +57,25 @@ describe('Blog app', () => {
       it('creator can delete their blogs', function () {
         cy.contains('show').click()
         cy.contains('remove').click()
-        cy.should('not.contain', 'new blog makise')
+        cy.contains('new blog makise').should('not.exist')
+      })
+      describe.only('And you log out and log in as someone else', function () {
+        beforeEach(() => {
+          cy.contains('log out').click()
+          const user = {
+            username: 'salieri',
+            password: 'password',
+            name: 'salieri'
+          }
+          cy.request('POST', `${Cypress.env('BACKEND')}/users`, user)
+          cy.login('salieri', 'password')
+        })
+        it('should not show the remove button for someone elses blog', function () {
+          cy.contains('show').click()
+          cy.contains('remove').should('not.exist')
+        })
       })
     })
+
   })
 })
