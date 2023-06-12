@@ -31,4 +31,18 @@ describe('Blog app', () => {
       cy.get('p').should('not.have.class', 'success').and('have.class', 'error')
     })
   })
+
+  describe.only('When logged in', function () {
+    beforeEach(() => {
+      cy.login('kuromika', 'password')
+    })
+    it('A blog can be created', function () {
+      cy.get('button').contains('new blog').click()
+      cy.get('input#title').type('new blog')
+      cy.get('input#author').type('Makise Kurisu')
+      cy.get('input#url').type('SERN')
+      cy.get('button').contains('create').click()
+      cy.contains('new blog Makise Kurisu')
+    })
+  })
 })
