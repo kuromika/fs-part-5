@@ -54,6 +54,11 @@ describe('Blog app', () => {
         cy.contains('like').click()
         cy.contains('1')
       })
+      it('creator can delete their blogs', function () {
+        cy.contains('show').click()
+        cy.contains('remove').click()
+        cy.should('not.contain', 'new blog makise')
+      })
     })
   })
 })
