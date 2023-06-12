@@ -36,6 +36,17 @@ describe('Blog app', () => {
     beforeEach(() => {
       cy.login('kuromika', 'password')
     })
+
+    it.only('Blogs are sorted from most liked to least', function () {
+      cy.createBlog('first', 'makise', 'google', 10)
+      cy.createBlog('third', 'makise', 'google', 5)
+      cy.createBlog('second', 'makise', 'google', 7)
+      cy.get('.blog').eq(0).should('contain', 'first')
+      cy.get('.blog').eq(1).should('contain', 'second')
+      cy.get('.blog').eq(2).should('contain', 'third')
+
+    })
+
     it('A blog can be created', function () {
       cy.get('button').contains('new blog').click()
       cy.get('input#title').type('new blog')
@@ -59,7 +70,7 @@ describe('Blog app', () => {
         cy.contains('remove').click()
         cy.contains('new blog makise').should('not.exist')
       })
-      describe.only('And you log out and log in as someone else', function () {
+      describe('And you log out and log in as someone else', function () {
         beforeEach(() => {
           cy.contains('log out').click()
           const user = {
